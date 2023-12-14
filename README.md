@@ -18,7 +18,7 @@ All images that are not in a public registry (e.g. Docker Hub) need to be includ
 
 Then, run
 ```shell
-$ make init
+$ make init # Only the first time
 ```
 ```shell
 $ make setup
