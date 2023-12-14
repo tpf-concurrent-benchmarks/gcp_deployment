@@ -40,7 +40,7 @@ define ssh_tunnel_to_vm
 endef
 
 _save_docker_images:
-	$(foreach image,$(DOCKER_IMAGES),docker save $(image) | gzip > ./docker_images/$(image).tar.gz;)
+	$(foreach image,$(DOCKER_IMAGES),docker save $(image) | gzip > ./.docker_images/$(image).tar.gz;)
 .PHONY: _save_docker_images
 
 setup:
@@ -59,7 +59,7 @@ deploy:
 	manager_ip=$$(cat ansible/hosts | grep -A 1 "\[vms\]" | tail -n 1) && \
 	ssh $(SSH_OPTIONS) \
 		-o ProxyCommand="ssh $(SSH_OPTIONS) -i $(SSH_KEY_PATH) -W %h:%p ubuntu@$$bastion_ip" \
-		-i $(SSH_KEY_PATH) ubuntu@$$manager_ip "cd $() $(DEPLOY_COMMAND)"
+		-i $(SSH_KEY_PATH) ubuntu@$$manager_ip "cd $(REPO_DEST) && $(DEPLOY_COMMAND)"
 
 bash_%:
 	$(call ssh_to_vm,$*)
