@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Metals
+.bloop/
+.metals/
+metals.sbt
+
+# IDEA
+.idea
+.idea_modules
+/.worksheet/
+
+# Other
+graphite/
+graphite_remote/
+compilation/manager/
+compilation/worker/
+compilation/common/
+*.jar
+.make/
+*.pem
+*.pub
+*.tfstate*
+.terraform/
+.terraform*
+.docker_images/
+
+# Ansible
+ansible/bastion_ip
+ansible/hosts
