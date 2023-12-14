@@ -1,8 +1,0 @@
-[vms:vars]
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -o StrictHostKeyChecking=no -i ../key.pem -W %h:%p ubuntu@34.132.157.124"'
-[vms]
-10.10.0.3
-10.10.0.7
-10.10.0.6
-10.10.0.5
-10.10.0.4
