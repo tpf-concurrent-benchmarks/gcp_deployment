@@ -13,6 +13,7 @@
         dest: ~/docker_images/
       with_fileglob:
         - "../.docker_images/*.tar.gz"
+    # If this fails, run ansible/upload_images.yaml again
     - name: Load Docker images
       docker_image:
         name: "{{ item | basename | regex_replace('\\.tar.gz$', '') }}"
