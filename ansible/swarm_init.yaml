@@ -1,0 +1,40 @@
+- name: Start Docker Swarm
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Remove previous Docker Swarm
+      community.docker.docker_swarm:
+        state: absent
+        force: yes
+      when: inventory_hostname == groups['all'][0]
+
+    - name: Initialize Docker Swarm on the first host (master)
+      community.docker.docker_swarm:
+        state: present
+        advertise_addr: "{{ groups['all'][0] }}"
+      when: inventory_hostname == groups['all'][0]
+
+    - name: Get join token from the master node
+      command: "docker swarm join-token -q worker"
+      register: swarm_join_token
+      when: inventory_hostname == groups['all'][0]
+
+    - set_fact:
+        swarm_join_token: "{{ hostvars[groups['all'][0]]['swarm_join_token'] }}"
+      when: inventory_hostname != groups['all'][0]
+
+    - name: Leave previous Docker Swarm
+      community.docker.docker_swarm:
+        state: absent
+      when: inventory_hostname != groups['all'][0]
+
+    - name: Join Docker Swarm as worker nodes
+      community.docker.docker_swarm:
+        state: join
+        remote_addrs: ["{{ groups['all'][0] }}"]
+        join_token: "{{ swarm_join_token.stdout }}"
+      when: inventory_hostname != groups['all'][0]
+
+

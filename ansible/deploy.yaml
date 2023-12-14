@@ -1,0 +1,23 @@
+- name: Start App
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Copy ssh key
+      copy:
+        src: "../key.pem"
+        dest: "~/.ssh/github"
+        mode: 0400
+    - name: Pull repository
+      git:
+        repo: "{{ repo }}"
+        dest: "{{ repo_dest }}"
+        accept_hostkey: yes
+        key_file: "~/.ssh/github"
+        force: yes
+        single_branch: yes
+        version: "{{ branch }}"
+    - name: Remove ssh key
+      file:
+        path: "~/.ssh/github"
+        state: absent

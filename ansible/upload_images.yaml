@@ -1,0 +1,22 @@
+- name: Update Docker images
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Create docker_images directory
+      file:
+        path: ~/docker_images
+        state: directory
+    - name: Copy Docker images
+      copy:
+        src: "{{ item }}"
+        dest: ~/docker_images/
+      with_fileglob:
+        - "../.docker_images/*.tar.gz"
+    - name: Load Docker images
+      docker_image:
+        name: "{{ item | basename | regex_replace('\\.tar.gz$', '') }}"
+        source: load
+        load_path: "~/docker_images/{{ item | basename }}"
+      with_fileglob:
+        - "../.docker_images/*.tar.gz"
