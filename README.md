@@ -14,15 +14,23 @@ All images that are not in a public registry (e.g. Docker Hub) need to be includ
 - `GIT_REPO`: Repository to be cloned in the VMs
 - `REPO_DEST`: Path where the repository will be cloned
 - `GIT_BRANCH`: Branch of the repository to use
+- `BUILD_CMD`: Command that will be executed inside `REPO_DEST` to build the images
 - `DEPLOY_COMMAND`: Command that will be executed inside `REPO_DEST` to deploy the stack
 
 Then, run
+
 ```shell
 $ make init # Only the first time
 ```
+
+```shell
+terraform -chdir=terraform apply
+```
+
 ```shell
 $ make setup
 ```
+
 ```shell
 $ make deploy
 ```
