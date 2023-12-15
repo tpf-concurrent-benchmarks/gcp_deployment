@@ -1,8 +1,8 @@
 key_pem=$(terraform -chdir=terraform output key_pem)
 key_pub=$(terraform -chdir=terraform output key_pub)
 
-mv key.pem key.pem.old
-mv key.pub key.pub.old
+mv key.pem key.pem.old -f
+mv key.pub key.pub.old -f
 
 # remove <<EOT and EOT from the key
 key_pem=$(echo "$key_pem" | sed '1d;$d')
