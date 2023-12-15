@@ -5,6 +5,6 @@ cd "$DIR" || exit
 
 ansible-playbook -i hosts --private-key ../key.pem -u ubuntu\
   -e "repo=$1 repo_dest=$2 branch=$3"\
-  deploy.yaml
+  get_source.yaml
 
 cd "$OLD_DIR" || exit
