@@ -1,4 +1,4 @@
-- name: Start App
+- name: Get source code
   hosts: all
   gather_facts: no
 
