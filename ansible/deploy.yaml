@@ -15,7 +15,6 @@
         accept_hostkey: yes
         key_file: "~/.ssh/github"
         force: yes
-        single_branch: yes
         version: "{{ branch }}"
     - name: Remove ssh key
       file:
