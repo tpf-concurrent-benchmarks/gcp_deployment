@@ -10,14 +10,18 @@ GIT_REPO := git@github.com:tpf-concurrent-benchmarks/grid_search_scala.git
 REPO_DEST := /home/ubuntu/grid_search_scala
 GIT_BRANCH := master
 
+# The command that will be run on each VM to build the images
+BUILD_CMD := make build
+
 # The command that will be run on the manager node to deploy the stack
-DEPLOY_COMMAND := make deploy_cloud
+DEPLOY_COMMAND := make deploy_jars
 
 # Get a list of local docker images that start with the variable DOCKER_IMAGES_PREFIX, that are not from a external registry, and that are tagged as latest
 DOCKER_IMAGES := $(shell docker images --format '{{.Repository}}:{{.Tag}}' | grep $(DOCKER_IMAGES_PREFIX) | grep latest | grep -v -E '^([^/]+)/' | sort)
 
 init:
 	gcloud auth login
+	mkdir -p .docker_images
 	terraform -chdir=terraform init
 	./get_keys.sh
 	ansible-galaxy collection install community.docker
@@ -44,14 +48,15 @@ _save_docker_images:
 .PHONY: _save_docker_images
 
 setup:
-	terraform -chdir=terraform apply
+	# Wait for the VMs to be ready
+	# If you get "unreachable" errors, wait a minute and run "make setup" again
+	sleep 60
 	ansible/get_bastion_ip.sh
 	ansible/update_inventory.sh
 	ansible/setup.sh
 	ansible/init_swarm.sh
-	ansible/deploy.sh $(GIT_REPO) $(REPO_DEST) $(GIT_BRANCH)
-	make _save_docker_images
-	ansible/upload_images.sh
+	ansible/get_source.sh "$(GIT_REPO)" "$(REPO_DEST)" "$(GIT_BRANCH)"
+	ansible/build_images.sh "$(REPO_DEST)" "$(BUILD_CMD)"
 .PHONY: setup
 
 deploy:
