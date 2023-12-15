@@ -8,7 +8,7 @@ resource "google_compute_instance" "vms" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2004-lts"
-      size = count.index == 0 ? 50 : 10
+      size = count.index == 0 ? 30 : 10
     }
   }
 
