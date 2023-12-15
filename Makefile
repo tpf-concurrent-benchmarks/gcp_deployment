@@ -11,7 +11,7 @@ REPO_DEST := /home/ubuntu/grid_search_scala
 GIT_BRANCH := master
 
 # The command that will be run on the manager node to deploy the stack
-DEPLOY_COMMAND := cd $(REPO_DEST) && make deploy_cloud
+DEPLOY_COMMAND := make deploy_cloud
 
 # Get a list of local docker images that start with the variable DOCKER_IMAGES_PREFIX, that are not from a external registry, and that are tagged as latest
 DOCKER_IMAGES := $(shell docker images --format '{{.Repository}}:{{.Tag}}' | grep $(DOCKER_IMAGES_PREFIX) | grep latest | grep -v -E '^([^/]+)/' | sort)
