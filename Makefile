@@ -18,6 +18,7 @@ DOCKER_IMAGES := $(shell docker images --format '{{.Repository}}:{{.Tag}}' | gre
 
 init:
 	gcloud auth login
+	mkdir -p ./.docker_images
 	terraform -chdir=terraform init
 	./get_keys.sh
 	ansible-galaxy collection install community.docker
