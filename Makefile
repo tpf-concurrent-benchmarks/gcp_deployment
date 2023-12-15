@@ -1,10 +1,6 @@
 SSH_OPTIONS := -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 SSH_KEY_PATH := ./key.pem
 
-# Images with this prefix will be saved and uploaded to the VMs
-# This is useful for images that are built locally and not in a registry
-DOCKER_IMAGES_PREFIX := grid_search_scala_
-
 # Git repository that will be cloned on the VMs
 GIT_REPO := git@github.com:tpf-concurrent-benchmarks/grid_search_scala.git
 REPO_DEST := /home/ubuntu/grid_search_scala
@@ -15,9 +11,6 @@ BUILD_CMD := make build
 
 # The command that will be run on the manager node to deploy the stack
 DEPLOY_COMMAND := make deploy_jars
-
-# Get a list of local docker images that start with the variable DOCKER_IMAGES_PREFIX, that are not from a external registry, and that are tagged as latest
-DOCKER_IMAGES := $(shell docker images --format '{{.Repository}}:{{.Tag}}' | grep $(DOCKER_IMAGES_PREFIX) | grep latest | grep -v -E '^([^/]+)/' | sort)
 
 init:
 	gcloud auth login
@@ -42,10 +35,6 @@ define ssh_tunnel_to_vm
 		-i ./key.pem -o ProxyCommand="ssh $(SSH_OPTIONS) -i ./key.pem -W %h:%p ubuntu@$$bastion_ip" \
 		ubuntu@$$manager_ip
 endef
-
-_save_docker_images:
-	$(foreach image,$(DOCKER_IMAGES),docker save $(image) | gzip > ./.docker_images/$(image).tar.gz;)
-.PHONY: _save_docker_images
 
 setup:
 	# Wait for the VMs to be ready
