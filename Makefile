@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 SSH_OPTIONS := -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 SSH_KEY_PATH := ./key.pem
 
@@ -37,13 +38,14 @@ define ssh_tunnel_to_vm
 endef
 
 setup:
-	# Wait for the VMs to be ready
-	# If you get "unreachable" errors, wait a minute and run "make setup" again
-	sleep 60
+	# If you get "unreachable" errors, wait a minute and run again
+	mkdir -p .common/$(shell basename ${REPO_DEST})
+	terraform -chdir=terraform apply
+	sleep 10
 	ansible/get_bastion_ip.sh
 	ansible/update_inventory.sh
 	ansible/setup.sh
-	ansible/init_swarm.sh
+	ansible/swarm_init.sh
 	ansible/get_source.sh "$(GIT_REPO)" "$(REPO_DEST)" "$(GIT_BRANCH)"
 	ansible/build_images.sh "$(REPO_DEST)" "$(BUILD_CMD)"
 .PHONY: setup
@@ -54,6 +56,19 @@ deploy:
 	ssh $(SSH_OPTIONS) \
 		-o ProxyCommand="ssh $(SSH_OPTIONS) -i $(SSH_KEY_PATH) -W %h:%p ubuntu@$$bastion_ip" \
 		-i $(SSH_KEY_PATH) ubuntu@$$manager_ip "cd $(REPO_DEST) && $(DEPLOY_COMMAND)"
+.PHONY: deploy
+
+configure_grafana:
+	if [[ "$(GIT_REPO)" == *"grid_search"* ]]; then \
+  		echo "Importing Grid Search dashboard"; \
+		ansible/configure_grafana.sh "gs_dashboard"; \
+	elif [[ "$(GIT_REPO)" == *"image_processing"* ]]; then \
+		echo "Importing Image Processing dashboard"; \
+		ansible/configure_grafana.sh "ip_dashboard"; \
+	else
+	  	echo "Unable to determine which dashboard to import"; \
+	fi
+.PHONY: configure_grafana
 
 bash_%:
 	$(call ssh_to_vm,$*)
