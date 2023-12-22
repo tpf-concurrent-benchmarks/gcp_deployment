@@ -15,6 +15,7 @@
           - virtualenv
           - python3-setuptools
           - nfs-common
+          - make
         update_cache: yes
         state: latest
 

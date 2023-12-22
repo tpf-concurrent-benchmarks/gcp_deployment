@@ -21,8 +21,7 @@
       file:
         path: "~/.ssh/github"
         state: absent
-    - name: Change Graphite retentions
-      # This is done because the default retentions are too large for this environment,
-      # and would occupy too much disk space.
-      shell: "cd {{ repo_dest }} && sed -i 's/10s:200d/10s:6h/' graphite.storage-schemas.conf"
-      when: inventory_hostname == groups['all'][0]
+    - name: Copy .common files
+      copy:
+        src: "../.common/{{ repo_dest | basename }}/"
+        dest: "{{ repo_dest }}"

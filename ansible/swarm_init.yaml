@@ -4,11 +4,15 @@
   become: true
 
   tasks:
+     # If this playbook is run a second time, the increased MTU
+     # will cause some tasks to fail. So we need to reset it.
+    - name: Set MTU
+      shell: "interface=$(ip link | grep -oP 'ens\\d+'); ip link set dev $interface mtu 1450"
+
     - name: Remove previous Docker Swarm
       community.docker.docker_swarm:
         state: absent
         force: yes
-      when: inventory_hostname == groups['all'][0]
 
     - name: Initialize Docker Swarm on the first host (master)
       community.docker.docker_swarm:
@@ -37,4 +41,7 @@
         join_token: "{{ swarm_join_token.stdout }}"
       when: inventory_hostname != groups['all'][0]
 
-
+    # Fix for a weir bug where some big packets are dropped
+    # between the master and the workers
+    - name: Increase MTU
+      shell: "interface=$(ip link | grep -oP 'ens\\d+'); ip link set dev $interface mtu 2000"

@@ -1,7 +1,8 @@
 - name: Build Docker Images
   hosts: all
   gather_facts: false
+  become: true
 
   tasks:
     - name: Build images
-      shell: "cd {{ src_dir}} && {{ build_command }}"
+      shell: "cd {{ src_dir }} && {{ build_command }}"
