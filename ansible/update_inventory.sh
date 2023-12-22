@@ -8,7 +8,7 @@ BASTION_IP=$(cat ./bastion_ip)
 
 # Setup how Ansible is going to use the Bastion to communicate with the nodes
 echo "[vms:vars]" > ./hosts
-echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand=\"ssh -o StrictHostKeyChecking=no -i ../key.pem -W %h:%p ubuntu@$BASTION_IP\"'" >> ./hosts
+echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand=\"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ../key.pem -W %h:%p ubuntu@$BASTION_IP\"'" >> ./hosts
 
 # List all instances, obtain their private IP and add those to the inventory
 echo "[vms]" >> ./hosts
