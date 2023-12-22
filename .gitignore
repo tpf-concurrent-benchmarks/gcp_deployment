@@ -32,3 +32,4 @@ compilation/common/
 # Ansible
 ansible/bastion_ip
 ansible/hosts
+.common/
