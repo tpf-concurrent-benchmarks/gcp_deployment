@@ -49,8 +49,8 @@ resource "google_compute_firewall" "ssh-rule" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_firewall" "app-rule" {
-  name = "allow-app-ports"
+resource "google_compute_firewall" "http-apps-rule" {
+  name = "allow-http-apps-ports"
   network = google_compute_network.vpc.name
   direction = "INGRESS"
   priority = 1000
