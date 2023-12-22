@@ -1,0 +1,94 @@
+- name: Configure Grafana
+  hosts: "{{ groups['all'][0] }}"
+  gather_facts: false
+
+  tasks:
+    - name: Load Dashboard
+      set_fact:
+        dashboard: "{{ lookup('file', '../dashboards/{{ dashboard_name }}.json') | from_json }}"
+
+    - name: Get Dashboard UID
+      set_fact:
+          dashboard_uid: "{{ dashboard.uid }}"
+
+    - name: Try to get Dashboard
+      uri:
+        url: "http://localhost:8081/api/dashboards/uid/{{ dashboard_uid }}"
+        method: GET
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+        body_format: json
+        return_content: yes
+      register: dashboard_get_resp
+      failed_when: false
+
+    - block:
+      # Search for a graphite datasource named "graphite" if it exists, do not create it
+      - name: Try to get Graphite Data
+        uri:
+          url: "http://localhost:8081/api/datasources/name/graphite"
+          method: GET
+          headers:
+            Accept: "application/json"
+            Content-Type: "application/json"
+          body_format: json
+          return_content: yes
+        register: response
+        failed_when: false
+
+      - name: Create Graphite datasource
+        when: response.status == 404
+        uri:
+          url: "http://localhost:8081/api/datasources"
+          method: POST
+          headers:
+            Accept: "application/json"
+            Content-Type: "application/json"
+          body_format: json
+          body:
+            name: "graphite"
+            type: "graphite"
+            url: "http://graphite:8080"
+            access: "proxy"
+            basicAuth: false
+
+      - name: Get Graphite Data
+        when: response.status == 404
+        uri:
+          url: "http://localhost:8081/api/datasources/name/graphite"
+          method: GET
+          headers:
+            Accept: "application/json"
+            Content-Type: "application/json"
+          body_format: json
+          return_content: yes
+        register: response_get
+
+      - set_fact: response="{{ response_get }}"
+        when: response.status == 404
+
+      - name: Get Graphite UID
+        set_fact:
+          graphite_uid: "{{ response.json | json_query('uid') }}"
+
+      - name: Create Dashboard
+        uri:
+          url: "http://localhost:8081/api/dashboards/import"
+          method: POST
+          headers:
+            Accept: "application/json"
+            Content-Type: "application/json"
+          body_format: json
+          body:
+            dashboard: "{{ dashboard }}"
+            folderUid: ""
+            overwrite: true
+            inputs:
+              - name: "DS_GRAPHITE"
+                type: "datasource"
+                pluginId: "graphite"
+                value: "{{ graphite_uid }}"
+
+          return_content: yes
+      when: dashboard_get_resp.status == 404
