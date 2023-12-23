@@ -44,4 +44,4 @@
     # Fix for a weir bug where some big packets are dropped
     # between the master and the workers
     - name: Increase MTU
-      shell: "interface=$(ip link | grep -oP 'ens\\d+'); ip link set dev $interface mtu 2000"
+      shell: "interface=$(ip link | grep -oP 'ens\\d+'); ip link set dev $interface mtu 1500"
