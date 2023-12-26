@@ -2,7 +2,7 @@
   "__inputs": [
     {
       "name": "DS_GRAPHITE",
-      "label": "Graphite",
+      "label": "graphite",
       "description": "",
       "type": "datasource",
       "pluginId": "graphite",
@@ -168,7 +168,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "short"
         },
         "overrides": []
       },
@@ -205,7 +205,7 @@
           },
           "hide": true,
           "refId": "A",
-          "target": "aggregate(stats_counts.*.results_produced, 'sum')",
+          "target": "consolidateBy(aggregate(stats_counts.*.results_produced, 'sum'), 'sum')",
           "textEditor": false
         },
         {
@@ -291,7 +291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mean {aggregatedBy=\"avg\", name=\"sumSeries(stats.gauges.cadvisor.gs_cpp_worker.*.*.cpu_usage_total)\", timeShift=\"-10s\"}"
+              "options": "Mean"
             },
             "properties": [
               {
@@ -697,7 +697,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "E {aggregatedBy=\"avg\", name=\"sumSeries(stats.gauges.cadvisor.gs_cpp_worker.*.*.tx_bytes)\", timeShift=\"-10s\"}"
+              "options": "E"
             },
             "properties": [
               {
@@ -709,7 +709,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "F {aggregatedBy=\"avg\", name=\"sumSeries(stats.gauges.cadvisor.gs_cpp_worker.*.*.rx_bytes)\", timeShift=\"-10s\"}"
+              "options": "F"
             },
             "properties": [
               {
@@ -1107,7 +1107,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "cpp",
           "value": "cpp"
         },
@@ -1208,6 +1208,6 @@
   "timezone": "",
   "title": "Grid Search Dashboard",
   "uid": "grid_search_dashboard",
-  "version": 20,
+  "version": 5,
   "weekStart": ""
 }
