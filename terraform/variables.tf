@@ -13,3 +13,7 @@ variable "zone" {
 variable "vm_count" {
     default = 5
 }
+
+variable "create_filestore" {
+    default = false
+}
