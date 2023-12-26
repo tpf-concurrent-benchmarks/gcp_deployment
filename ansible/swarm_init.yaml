@@ -41,7 +41,7 @@
         join_token: "{{ swarm_join_token.stdout }}"
       when: inventory_hostname != groups['all'][0]
 
-    # Fix for a weir bug where some big packets are dropped
+    # Fix for a weird bug where some big packets are dropped
     # between the master and the workers
     - name: Increase MTU
       shell: "interface=$(ip link | grep -oP 'ens\\d+'); ip link set dev $interface mtu 1500"
