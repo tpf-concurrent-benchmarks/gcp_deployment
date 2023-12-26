@@ -113,7 +113,7 @@ setup:
 		terraform -chdir=terraform apply; \
 	fi
 
-	sleep 10
+	sleep 30
 	ansible/get_bastion_ip.sh
 	ansible/update_inventory.sh
 	ansible/setup.sh
@@ -157,7 +157,7 @@ configure_grafana:
 	elif [[ "$(GIT_REPO)" == *"image_processing"* ]]; then \
 		echo "Importing Image Processing dashboard"; \
 		ansible/configure_grafana.sh "ip_dashboard"; \
-	else
+	else \
 	  	echo "Unable to determine which dashboard to import"; \
 	fi
 .PHONY: configure_grafana
