@@ -1927,7 +1927,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "I {aggregatedBy=\"avg\", name=\"avgSeries(sumSeries(stats.gauges.cadvisor.ip_scala_format_worker.*.*.rx_bytes))\", timeShift=\"-10s\"}"
+              "options": "I"
             },
             "properties": [
               {
@@ -2510,8 +2510,8 @@
       {
         "current": {
           "selected": true,
-          "text": "cpp",
-          "value": "cpp"
+          "text": "go",
+          "value": "go"
         },
         "hide": 0,
         "includeAll": false,
@@ -2524,12 +2524,12 @@
             "value": "scala"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "cpp",
             "value": "cpp"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "go",
             "value": "go"
           },
@@ -2634,13 +2634,13 @@
     ]
   },
   "time": {
-    "from": "2024-01-14T22:33:05.000Z",
+    "from": "2024-01-14T23:14:02.000Z",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Image Processing Dashboard",
   "uid": "image_processing_dashboard",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
