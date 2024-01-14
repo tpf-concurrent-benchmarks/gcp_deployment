@@ -2,7 +2,7 @@
   "__inputs": [
     {
       "name": "DS_GRAPHITE",
-      "label": "Graphite",
+      "label": "graphite",
       "description": "",
       "type": "datasource",
       "pluginId": "graphite",
@@ -297,6 +297,8 @@
             }
           },
           "mappings": [],
+          "max": 1.2,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -515,7 +517,7 @@
         "defaults": {
           "color": {
             "fixedColor": "light-orange",
-            "mode": "shades"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -744,6 +746,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1200,6 +1203,7 @@
             }
           },
           "mappings": [],
+          "max": 1.2,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1504,7 +1508,7 @@
         "defaults": {
           "color": {
             "fixedColor": "light-orange",
-            "mode": "shades"
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1879,6 +1883,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2319,6 +2324,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2503,9 +2509,9 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "scala",
-          "value": "scala"
+          "selected": true,
+          "text": "cpp",
+          "value": "cpp"
         },
         "hide": 0,
         "includeAll": false,
@@ -2513,12 +2519,12 @@
         "name": "language",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "scala",
             "value": "scala"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "cpp",
             "value": "cpp"
           },
@@ -2545,7 +2551,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "1min",
           "value": "1min"
         },
@@ -2628,13 +2634,13 @@
     ]
   },
   "time": {
-    "from": "2023-11-26T18:53:15.000Z",
+    "from": "2024-01-14T22:33:05.000Z",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Image Processing Dashboard",
   "uid": "image_processing_dashboard",
-  "version": 6,
+  "version": 4,
   "weekStart": ""
 }
